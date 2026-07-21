@@ -30,4 +30,21 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public User updateUser(Long id, User updatedUser){
+
+        Optional<User> user= getUserById(id);
+        if(user.isEmpty()){
+            return null;
+        }
+
+        User existingUser= user.get();
+        existingUser.setName(updatedUser.getName());
+        existingUser.setAge(updatedUser.getAge());
+        existingUser.setEmail(updatedUser.getEmail());
+
+
+        return userRepository.save(existingUser);
+
+    }
+
 }
