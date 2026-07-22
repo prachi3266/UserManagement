@@ -42,7 +42,6 @@ public class UserService {
         existingUser.setAge(updatedUser.getAge());
         existingUser.setEmail(updatedUser.getEmail());
 
-
         return userRepository.save(existingUser);
 
     }

@@ -3,10 +3,8 @@
 package com.example.UserManagement.Model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class User {
@@ -14,8 +12,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Name can't be blank!")
     private String name;
+    @NotBlank(message = "Email can't blank!")
+    @Email(message = "Enter a valid email!")
     private String email;
+    @Min(value = 18, message = "Age must be atleast 18")
+    @Max(value= 100, message = "Age can't exceed 100")
     private int age;
 
     public long getId() {

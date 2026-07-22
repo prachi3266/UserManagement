@@ -9,6 +9,7 @@ package com.example.UserManagement.Controller;
 import com.example.UserManagement.Model.User;
 import com.example.UserManagement.Service.UserService;
 import com.example.UserManagement.UserManagementApplication;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class UserController {
      }
 
      @PostMapping
-     public User createUser(@RequestBody User user){
+     public User createUser(@Valid @RequestBody User user){
          return userService.saveUser(user);
      }
 
@@ -46,7 +47,7 @@ public class UserController {
      }
 
      @PutMapping("/{id}")
-     public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user){
+     public ResponseEntity<User> updateUserById(@PathVariable Long id, @Valid @RequestBody User user){
 
          User updatedUser= userService.updateUser(id, user);
 
