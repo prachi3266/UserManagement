@@ -6,6 +6,8 @@
 * @RequestBody- Converts JSON into JAVA Object*/
 package com.example.UserManagement.Controller;
 
+import com.example.UserManagement.DTO.UserRequestDTO;
+import com.example.UserManagement.DTO.UserResponseDTO;
 import com.example.UserManagement.Model.User;
 import com.example.UserManagement.Service.UserService;
 import com.example.UserManagement.UserManagementApplication;
@@ -25,45 +27,44 @@ public class UserController {
      }
 
      @PostMapping
-     public User createUser(@Valid @RequestBody User user){
+     public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO user){
          return userService.saveUser(user);
      }
 
      @GetMapping
-     public List<User> getAllUsers(){
-         return userService.getAllUser();
+     public List<UserResponseDTO> getAllUsers(){
+         return userService.getAllUsers();
      }
 
      @GetMapping("/{id}")
-     public ResponseEntity<User> getUserById(@PathVariable Long id){
+     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
 
-         Optional<User> user= userService.getUserById(id);
-
-         if(user.isPresent()){
-             return  ResponseEntity.ok(user.get());
+         UserResponseDTO userResponseDTO= userService.getUserById(id);
+         if(userResponseDTO!=null){
+             return  ResponseEntity.ok(userResponseDTO);
          }
 
          return ResponseEntity.notFound().build();
      }
 
      @PutMapping("/{id}")
-     public ResponseEntity<User> updateUserById(@PathVariable Long id, @Valid @RequestBody User user){
+     public ResponseEntity<UserResponseDTO> updateUserById(@PathVariable Long id, @Valid @RequestBody UserRequestDTO updatedUser){
 
-         User updatedUser= userService.updateUser(id, user);
+         UserResponseDTO response= userService.updateUser(id, updatedUser);
 
-         if(updatedUser== null){
+         if(response== null){
              return ResponseEntity.notFound().build();
          }
-         return ResponseEntity.ok(updatedUser);
+         return ResponseEntity.ok(response);
      }
 
      @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id){
-         Optional<User> user= userService.getUserById(id);
+    public ResponseEntity<UserResponseDTO> deleteUser(@PathVariable Long id){
+         UserResponseDTO deletedUser= userService.getUserById(id);
 
-         if(user.isPresent()){
+         if(deletedUser!=null){
              userService.deleteUser(id);
-             return ResponseEntity.ok(user.get());
+             return ResponseEntity.ok(deletedUser);
          }
           return ResponseEntity.notFound().build();
 
