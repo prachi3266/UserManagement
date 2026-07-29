@@ -6,6 +6,7 @@ import com.example.UserManagement.DTO.UserResponseDTO;
 import com.example.UserManagement.Mapper.UserMapper;
 import com.example.UserManagement.Model.User;
 import com.example.UserManagement.Repository.UserRepository;
+import com.example.UserManagement.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,18 +36,13 @@ public class UserService {
 
     public List<UserResponseDTO> getAllUsers(){
         List<User> users= userRepository.findAll();
-        List<UserResponseDTO> userResponseList= new ArrayList<>();
-        for(User user: users){
-            UserResponseDTO response= UserMapper.toResponse(user);
-            userResponseList.add(response);
-        }
-        return userResponseList;
+        return users.stream().map(user->UserMapper.toResponse(user)).toList();
     }
 
     public UserResponseDTO getUserById(Long id){
         Optional<User> user= userRepository.findById(id);
         if(user.isEmpty()){
-            return null;
+            throw new UserNotFoundException("User not found with id: "+ id);
         }
         UserResponseDTO response= UserMapper.toResponse(user.get());
 
@@ -58,7 +54,7 @@ public class UserService {
 
         Optional<User> existingUser= userRepository.findById(id);
         if(existingUser.isEmpty()){
-            return null;
+            throw new UserNotFoundException("User not found with id: "+id);
         }
 
         User user=existingUser.get();

@@ -40,11 +40,8 @@ public class UserController {
      public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
 
          UserResponseDTO userResponseDTO= userService.getUserById(id);
-         if(userResponseDTO!=null){
-             return  ResponseEntity.ok(userResponseDTO);
-         }
 
-         return ResponseEntity.notFound().build();
+         return ResponseEntity.ok(userResponseDTO);
      }
 
      @PutMapping("/{id}")
@@ -52,21 +49,15 @@ public class UserController {
 
          UserResponseDTO response= userService.updateUser(id, updatedUser);
 
-         if(response== null){
-             return ResponseEntity.notFound().build();
-         }
          return ResponseEntity.ok(response);
      }
 
      @DeleteMapping("/{id}")
     public ResponseEntity<UserResponseDTO> deleteUser(@PathVariable Long id){
          UserResponseDTO deletedUser= userService.getUserById(id);
+         userService.deleteUser(id);
+         return ResponseEntity.ok(deletedUser);
 
-         if(deletedUser!=null){
-             userService.deleteUser(id);
-             return ResponseEntity.ok(deletedUser);
-         }
-          return ResponseEntity.notFound().build();
 
      }
 
