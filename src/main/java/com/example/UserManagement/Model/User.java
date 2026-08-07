@@ -12,14 +12,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "Name can't be blank!")
     private String name;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+
     @NotBlank(message = "Email can't blank!")
     @Email(message = "Enter a valid email!")
     private String email;
+
     @Min(value = 18, message = "Age must be atleast 18")
     @Max(value= 100, message = "Age can't exceed 100")
     private int age;
+
 
     public long getId() {
         return id;
@@ -31,6 +38,14 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public @NotBlank(message = "Password is required") String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank(message = "Password is required") String password) {
+        this.password = password;
     }
 
     public void setId(Long id) {

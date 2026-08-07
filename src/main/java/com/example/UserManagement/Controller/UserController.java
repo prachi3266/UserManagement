@@ -11,6 +11,7 @@ import com.example.UserManagement.DTO.UserResponseDTO;
 import com.example.UserManagement.Model.User;
 import com.example.UserManagement.Service.UserService;
 import com.example.UserManagement.UserManagementApplication;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +27,19 @@ public class UserController {
         this.userService= userService;
      }
 
+     @Operation(summary = "Create a new user")
      @PostMapping
      public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO user){
          return userService.saveUser(user);
      }
 
+     @Operation(summary = "Get all users")
      @GetMapping
      public List<UserResponseDTO> getAllUsers(){
          return userService.getAllUsers();
      }
 
+     @Operation(summary = "Get user by ID")
      @GetMapping("/{id}")
      public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
 
@@ -44,6 +48,7 @@ public class UserController {
          return ResponseEntity.ok(userResponseDTO);
      }
 
+     @Operation(summary = "Update a user by ID")
      @PutMapping("/{id}")
      public ResponseEntity<UserResponseDTO> updateUserById(@PathVariable Long id, @Valid @RequestBody UserRequestDTO updatedUser){
 
@@ -52,6 +57,7 @@ public class UserController {
          return ResponseEntity.ok(response);
      }
 
+     @Operation(summary = "Delete a user by ID")
      @DeleteMapping("/{id}")
     public ResponseEntity<UserResponseDTO> deleteUser(@PathVariable Long id){
          UserResponseDTO deletedUser= userService.getUserById(id);

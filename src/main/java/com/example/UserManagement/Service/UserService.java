@@ -7,6 +7,7 @@ import com.example.UserManagement.Mapper.UserMapper;
 import com.example.UserManagement.Model.User;
 import com.example.UserManagement.Repository.UserRepository;
 import com.example.UserManagement.exception.UserNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,13 +19,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder= passwordEncoder;
     }
 
     public UserResponseDTO saveUser(UserRequestDTO userRequestDTO){
 
         User user= UserMapper.toEntity(userRequestDTO);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user= userRepository.save(user);
 

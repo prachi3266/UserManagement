@@ -1,11 +1,17 @@
 package com.example.UserManagement.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "User details returned by API")
 public class UserResponseDTO {
 
-
+    @Schema(description = "User's unique ID", example = "1")
     private Long id;
+    @Schema(description = "User's full name", example = "Prachi Jain")
     private String name;
+    @Schema(description = "User's email", example = "prachi@gmail.com")
     private String email;
+    @Schema(description = "User's age", example="24")
     private int age;
 
     public Long getId() {
