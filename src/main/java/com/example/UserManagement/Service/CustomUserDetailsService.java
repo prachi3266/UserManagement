@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class  CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.get().getEmail())
                 .password(user.get().getPassword())
-                .roles("USER")
+                .roles(user.get().getRole())
                 .build();
     }
 

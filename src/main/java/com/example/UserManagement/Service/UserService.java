@@ -32,6 +32,8 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        user.setRole("USER");
+
         user= userRepository.save(user);
 
         UserResponseDTO response=UserMapper.toResponse(user);
@@ -67,16 +69,45 @@ public class UserService {
         user.setName(updatedUser.getName());
         user.setAge(updatedUser.getAge());
         user.setEmail(updatedUser.getEmail());
-
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         user= userRepository.save(user);
 
         UserResponseDTO updatedUserResponse= UserMapper.toResponse(user);
         return updatedUserResponse;
     }
 
+    public UserResponseDTO updateRole(Long id, String role){
+        Optional<User> existingUser= userRepository.findById(id);
+
+        if(existingUser.isEmpty()){
+            throw new UserNotFoundException("User not found with id: "+ id);
+        }
+
+        if(role == null){
+            throw new IllegalArgumentException(" Role must be either USER or ADMIN");
+        }
+
+        String normalizedRole= role.toUpperCase();
+
+        if(!normalizedRole.equals("USER") && !normalizedRole.equals("ADMIN")){
+            throw new IllegalArgumentException("Role must be either USER or ADMIN");
+        }
+
+        User user= existingUser.get();
+        user.setRole(normalizedRole);
+
+        user= userRepository.save(user);
+        return UserMapper.toResponse(user);
+    }
+
     public void deleteUser(Long id){
 
         userRepository.deleteById(id);
+    }
+
+    public boolean isOwner(Long userId, String email){
+        Optional<User> user= userRepository.findByEmail(email);
+        return user.isPresent() && user.get().getId().equals(userId);
     }
 
 }

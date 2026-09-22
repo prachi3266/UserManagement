@@ -14,6 +14,16 @@ public class UserResponseDTO {
     @Schema(description = "User's age", example="24")
     private int age;
 
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }
